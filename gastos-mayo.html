@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gastos Compartidos — Mayo 2026</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      padding: 24px;
+    }
+    header {
+      background: linear-gradient(135deg, #111111 0%, #1a1a1a 60%, #2a2a2a 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.5px; }
+    header .meta { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+    .badge {
+      background: #F5C800;
+      color: #111111;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .totals-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .total-card {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-left: 4px solid #ccc;
+    }
+    .total-card.corolla   { border-left-color: #c2410c; }
+    .total-card.trip      { border-left-color: #3a86ff; }
+    .total-card.servicios { border-left-color: #7e22ce; }
+    .total-card.alquiler  { border-left-color: #15803d; }
+    .total-card.pendiente { border-left-color: #d1d5db; opacity: 0.65; }
+    .total-card .label  { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #666; font-weight: 600; }
+    .total-card .amount { font-size: 1.4rem; font-weight: 700; margin-top: 4px; }
+    .total-card .sub    { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+    .split-box {
+      background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-bottom: 28px;
+      color: white;
+      box-shadow: 0 4px 16px rgba(245,200,0,0.25);
+    }
+    .split-box h2 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #F5C80099;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .split-items {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .split-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 20px;
+      min-width: 145px;
+    }
+    .split-item.pendiente { opacity: 0.45; border-style: dashed; }
+    .split-item .cat { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 4px; }
+    .split-item .val { font-size: 1.2rem; font-weight: 700; color: #F5C800; }
+    .split-item.pendiente .val { color: #666; font-size: 0.9rem; }
+    .split-total {
+      margin-left: auto;
+      background: #F5C800;
+      border-radius: 10px;
+      padding: 14px 24px;
+      text-align: center;
+    }
+    .split-total .cat     { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(0,0,0,0.6); margin-bottom: 4px; }
+    .split-total .val     { font-size: 1.3rem; font-weight: 700; color: #111111; }
+    .split-total .val-usd { font-size: 0.9rem; color: rgba(0,0,0,0.6); margin-top: 2px; }
+    .split-total .val-note{ font-size: 0.72rem; color: rgba(0,0,0,0.5); margin-top: 4px; font-style: italic; }
+
+    .resumen-final {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    .resumen-final-header {
+      background: #111111;
+      color: white;
+      padding: 16px 28px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+    .resumen-final-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 600px) { .resumen-final-body { grid-template-columns: 1fr; } }
+    .resumen-col { padding: 24px 28px; }
+    .resumen-col.vos  { background: #1a1a1a; }
+    .resumen-col.ella { background: #F5C800; }
+    .resumen-col .col-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px; opacity: 0.7; color: white; }
+    .resumen-col.ella .col-title { color: #111111; }
+    .resumen-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.08); gap: 12px; }
+    .resumen-col.ella .resumen-row { border-bottom-color: rgba(0,0,0,0.1); }
+    .resumen-row:last-of-type { border-bottom: none; }
+    .resumen-row .rr-label { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
+    .resumen-row .rr-val   { font-size: 0.88rem; font-weight: 600; color: white; white-space: nowrap; }
+    .resumen-col.ella .rr-label { color: rgba(0,0,0,0.65); }
+    .resumen-col.ella .rr-val   { color: #111111; }
+    .resumen-row.pendiente .rr-label { opacity: 0.45; font-style: italic; }
+    .resumen-row.pendiente .rr-val   { opacity: 0.45; font-style: italic; }
+    .resumen-divider { border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 12px 0 10px; }
+    .resumen-col.ella .resumen-divider { border-top-color: rgba(0,0,0,0.2); }
+    .resumen-total-row { display: flex; justify-content: space-between; align-items: center; }
+    .resumen-total-row .rt-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); }
+    .resumen-total-row .rt-val   { font-size: 1.6rem; font-weight: 800; color: white; }
+    .resumen-total-row .rt-usd   { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 2px; text-align: right; }
+    .resumen-total-row .rt-note  { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+    .resumen-col.ella .rt-label { color: rgba(0,0,0,0.65); }
+    .resumen-col.ella .rt-val   { color: #111111; }
+    .resumen-col.ella .rt-usd   { color: rgba(0,0,0,0.5); }
+    .resumen-col.ella .rt-note  { color: rgba(0,0,0,0.4); }
+
+    .saldo-neto {
+      background: #111111;
+      border-radius: 0 0 12px 12px;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .saldo-neto .sn-label   { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.6); }
+    .saldo-neto .sn-val     { font-size: 1.8rem; font-weight: 800; color: #F5C800; }
+    .saldo-neto .sn-usd     { font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .saldo-neto .sn-formula { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+    .section {
+      background: white; border-radius: 12px; margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden;
+    }
+    .section-header {
+      padding: 16px 24px; display: flex; align-items: center; gap: 12px;
+      font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .section-header .icon { font-size: 1.2rem; }
+    .section-header.corolla   { background: #fff8f0; color: #c2410c; border-bottom: 2px solid #c2410c22; }
+    .section-header.trip      { background: #e8f4ff; color: #3a86ff; border-bottom: 2px solid #3a86ff22; }
+    .section-header.servicios { background: #fdf4ff; color: #7e22ce; border-bottom: 2px solid #7e22ce22; }
+    .section-header.alquiler  { background: #f0fdf4; color: #15803d; border-bottom: 2px solid #15803d22; }
+    .section-header.pendiente-header { background: #f8fafc; color: #94a3b8; border-bottom: 2px solid #e2e8f022; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: #f8f9fa; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.8px; color: #666; padding: 10px 24px;
+      text-align: left; font-weight: 600;
+    }
+    th.right, td.right   { text-align: right; }
+    th.center, td.center { text-align: center; }
+    td { padding: 12px 24px; font-size: 0.88rem; border-top: 1px solid #f0f0f0; }
+    tr:hover td { background: #fafafa; }
+    .date  { color: #888; font-size: 0.82rem; white-space: nowrap; }
+    .desc  { color: #333; }
+    .sub   { font-size: 0.8rem; color: #888; }
+    .amount-pesos   { font-weight: 600; color: #111111; white-space: nowrap; }
+    .amount-usd     { font-weight: 600; color: #3a86ff; white-space: nowrap; }
+    .amount-credito { font-weight: 600; color: #16a34a; white-space: nowrap; }
+    .tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 8px; margin-left: 6px;
+      vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-cuota  { background: #e0e7ff; color: #3730a3; }
+    .tag-usd    { background: #dbeafe; color: #1d4ed8; }
+    .tag-brl    { background: #dcfce7; color: #15803d; }
+    .tag-credito{ background: #dcfce7; color: #15803d; }
+
+    .section-total {
+      background: #f8f9fa; padding: 12px 24px; display: flex;
+      justify-content: flex-end; gap: 32px;
+      font-weight: 700; font-size: 0.9rem; border-top: 2px solid #eee;
+    }
+    .section-total span  { color: #888; font-weight: 400; margin-right: 6px; }
+    .section-total .split { color: #c9a200; }
+    .section-total .split span { color: #c9a20088; }
+
+    .subsection-title {
+      padding: 6px 24px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px; color: #aaa;
+      background: #fafafa; border-top: 1px solid #f0f0f0;
+    }
+
+    .pendiente-block {
+      padding: 32px 24px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 0.88rem;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div>
+    <h1>Gastos Compartidos — Mayo 2026</h1>
+    <div class="meta">Daniel &amp; Melisa &nbsp;|&nbsp; División 50/50 &nbsp;|&nbsp; Tarjeta: datos reales · Alquiler/expensas: pendientes</div>
+  </div>
+  <div class="badge">Mayo 2026</div>
+</header>
+
+<!-- TOTALES POR CATEGORÍA -->
+<div class="totals-bar">
+  <div class="total-card corolla">
+    <div class="label">Auto — Toyota Corolla</div>
+    <div class="amount" style="color:#c2410c">$214.572,62</div>
+    <div class="sub">Seguro $113.526 + Peajes $41.269 + Patente $59.778</div>
+  </div>
+  <div class="total-card trip">
+    <div class="label">Trip / Viaje</div>
+    <div class="amount" style="color:#3a86ff">$241.254,67 + U$D 987,84</div>
+    <div class="sub">Iguazú (hotel + Macuco Safari) + USA 2026 (LATAM + Turo + parques)</div>
+  </div>
+  <div class="total-card servicios">
+    <div class="label">Servicios</div>
+    <div class="amount" style="color:#7e22ce">$223.119,66</div>
+    <div class="sub">Luz $116.615 + Internet $73.699 + Gas $32.806</div>
+  </div>
+  <div class="total-card alquiler pendiente">
+    <div class="label">Alquiler + Expensas + Seg. Incendio</div>
+    <div class="amount" style="color:#94a3b8">$10.315,00 + pendiente</div>
+    <div class="sub">Seg. incendio en tarjeta · Alquiler/expensas pendientes</div>
+  </div>
+</div>
+
+<!-- SPLIT BOX -->
+<div class="split-box">
+  <h2>💸 Lo que debe Melisa (mitad de gastos compartidos disponibles)</h2>
+  <div class="split-items">
+    <div class="split-item">
+      <div class="cat">Auto</div>
+      <div class="val">$107.286,31</div>
+    </div>
+    <div class="split-item">
+      <div class="cat">Trip / Viaje</div>
+      <div class="val">$120.627,34</div>
+      <div class="cat" style="margin-top:4px;">+ U$D 493,92</div>
+    </div>
+    <div class="split-item">
+      <div class="cat">Servicios</div>
+      <div class="val">$111.559,83</div>
+    </div>
+    <div class="split-item">
+      <div class="cat">Seg. incendio (tarjeta)</div>
+      <div class="val">$5.157,50</div>
+    </div>
+    <div class="split-item pendiente">
+      <div class="cat">Alquiler</div>
+      <div class="val">pendiente</div>
+    </div>
+    <div class="split-item pendiente">
+      <div class="cat">Expensas</div>
+      <div class="val">pendiente</div>
+    </div>
+    <div class="split-total">
+      <div class="cat">Disponible</div>
+      <div class="val">$344.630,98</div>
+      <div class="val-usd">+ U$D 493,92</div>
+      <div class="val-note">+ alquiler/expensas (pend.)</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESUMEN FINAL -->
+<div class="resumen-final">
+  <div class="resumen-final-header">📊 Resumen de gastos compartidos — Mayo 2026</div>
+  <div class="resumen-final-body">
+
+    <div class="resumen-col vos">
+      <div class="col-title">Vos pagás (total)</div>
+      <div class="resumen-row">
+        <span class="rr-label">Auto</span>
+        <span class="rr-val">$214.572,62</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Seg. incendio depto (tarjeta)</span>
+        <span class="rr-val">$10.315,00</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Servicios</span>
+        <span class="rr-val">$223.119,66</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip / Viaje (pesos)</span>
+        <span class="rr-val">$241.254,67</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip / Viaje (USD)</span>
+        <span class="rr-val">U$D 987,84</span>
+      </div>
+      <div class="resumen-row pendiente">
+        <span class="rr-label">Alquiler (pendiente)</span>
+        <span class="rr-val">—</span>
+      </div>
+      <div class="resumen-row pendiente">
+        <span class="rr-label">Expensas (pendiente)</span>
+        <span class="rr-val">—</span>
+      </div>
+      <hr class="resumen-divider">
+      <div class="resumen-total-row">
+        <div>
+          <div class="rt-label">Disponible</div>
+          <div class="rt-note">+ alquiler/expensas pendientes</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rt-val">$689.261,95</div>
+          <div class="rt-usd">+ U$D 987,84</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resumen-col ella">
+      <div class="col-title">Melisa te debe (su mitad)</div>
+      <div class="resumen-row">
+        <span class="rr-label">Auto (mitad)</span>
+        <span class="rr-val">$107.286,31</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Seg. incendio (mitad)</span>
+        <span class="rr-val">$5.157,50</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Servicios (mitad)</span>
+        <span class="rr-val">$111.559,83</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip pesos (mitad)</span>
+        <span class="rr-val">$120.627,34</span>
+      </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip USD (mitad)</span>
+        <span class="rr-val">U$D 493,92</span>
+      </div>
+      <div class="resumen-row pendiente">
+        <span class="rr-label">Alquiler (pendiente)</span>
+        <span class="rr-val">—</span>
+      </div>
+      <div class="resumen-row pendiente">
+        <span class="rr-label">Expensas (pendiente)</span>
+        <span class="rr-val">—</span>
+      </div>
+      <hr class="resumen-divider">
+      <div class="resumen-total-row">
+        <div>
+          <div class="rt-label">Disponible</div>
+          <div class="rt-note">+ alquiler/expensas pendientes</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="rt-val">$344.630,98</div>
+          <div class="rt-usd">+ U$D 493,92</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="saldo-neto">
+    <div>
+      <div class="sn-label">Saldo parcial a cobrar</div>
+      <div class="sn-formula">Total final cuando lleguen alquiler/expensas</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="sn-val">$344.630,98</div>
+      <div class="sn-usd">+ U$D 493,92</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================== SECCIÓN SERVICIOS ===================== -->
+<div class="section">
+  <div class="section-header servicios">
+    <span class="icon">📡</span> Servicios
+  </div>
+  <div class="subsection-title">Internet &amp; TV</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Personal (Internet &amp; TV)</td>
+        <td class="right amount-pesos">$73.699,00</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="subsection-title">Luz</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Edelap — ciclo abril 2026 &nbsp;<span class="sub" style="display:inline;">vence 14/05/26</span></td>
+        <td class="right amount-pesos">$116.614,62</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="subsection-title">Gas</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Camuzzi — período feb–abr 2026 &nbsp;<span class="sub" style="display:inline;">venció 20/04/26</span></td>
+        <td class="right amount-pesos">$32.806,04</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="section-total">
+    <div><span>Total servicios:</span> $223.119,66</div>
+    <div class="split"><span>Mitad Melisa:</span> $111.559,83</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECCIÓN AUTO ===================== -->
+<div class="section">
+  <div class="section-header corolla">
+    <span class="icon">🚗</span> Auto — Toyota Corolla
+  </div>
+  <div class="subsection-title">Seguro</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Nativa Seguros — Seguro auto Toyota Corolla</td>
+        <td class="right amount-pesos">$113.525,68</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="subsection-title">Peajes</div>
+  <table>
+    <tbody>
+      <tr><td class="desc">AUBASA <span class="sub" style="margin-left:8px;">06/04</span></td><td class="right amount-pesos">$9.553,12</td></tr>
+      <tr><td class="desc">Autopistas Urbanas <span class="sub" style="margin-left:8px;">07/04</span></td><td class="right amount-pesos">$1.261,20</td></tr>
+      <tr><td class="desc">Autopistas Urbanas <span class="sub" style="margin-left:8px;">17/04</span></td><td class="right amount-pesos">$10.097,92</td></tr>
+      <tr><td class="desc">AUBASA <span class="sub" style="margin-left:8px;">19/04</span></td><td class="right amount-pesos">$17.970,42</td></tr>
+      <tr><td class="desc">Autopista del OE <span class="sub" style="margin-left:8px;">22/04</span></td><td class="right amount-pesos">$2.385,98</td></tr>
+    </tbody>
+  </table>
+  <div class="subsection-title">Patente</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Impuesto Automotor — cuota 3/10 <span class="sub" style="margin-left:8px;">AE778YK · vence 07/05/26</span></td>
+        <td class="right amount-pesos">$59.778,30</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="section-total">
+    <div><span>Total auto:</span> $214.572,62</div>
+    <div class="split"><span>Mitad Melisa:</span> $107.286,31</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECCIÓN TRIP ===================== -->
+<div class="section">
+  <div class="section-header trip">
+    <span class="icon">✈️</span> Trip / Viaje
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Despegar <span class="tag tag-cuota">2/9</span><span class="sub" style="margin-left:8px;">21/02</span></td>
+        <td class="right amount-pesos">$30.989,67</td>
+      </tr>
+      <tr>
+        <td class="desc">Macuco Safari — Iguazú Brasil <span class="tag tag-brl">BRL 768</span><span class="sub" style="margin-left:8px;">23/03</span></td>
+        <td class="right amount-usd">U$D 148,23</td>
+      </tr>
+      <tr>
+        <td class="desc">Hotel Carmen Iguazú <span class="sub" style="margin-left:8px;">24/03</span></td>
+        <td class="right amount-pesos">$81.500,00</td>
+      </tr>
+      <tr>
+        <td class="desc">Hotel at Booking.com <span class="tag tag-usd">USD</span><span class="sub" style="margin-left:8px;">29/03</span></td>
+        <td class="right amount-usd">U$D 132,09</td>
+      </tr>
+      <tr>
+        <td class="desc">LATAM — Vuelos USA <span class="sub" style="margin-left:8px;">02/04</span></td>
+        <td class="right amount-pesos">$128.765,00</td>
+      </tr>
+      <tr>
+        <td class="desc">Recreation.gov — Parques nacionales USA <span class="tag tag-usd">USD</span><span class="sub" style="margin-left:8px;">02/04</span></td>
+        <td class="right amount-usd">U$D 250,00</td>
+      </tr>
+      <tr>
+        <td class="desc">Turo — Auto 02 Ago <span class="tag tag-usd">USD</span><span class="sub" style="margin-left:8px;">05/04</span></td>
+        <td class="right amount-usd">U$D 288,00</td>
+      </tr>
+      <tr>
+        <td class="desc">Turo — Auto 18 Ago <span class="tag tag-usd">USD</span><span class="sub" style="margin-left:8px;">05/04</span></td>
+        <td class="right amount-usd">U$D 301,15</td>
+      </tr>
+      <tr>
+        <td class="desc">EconomyBookings.com <span class="tag tag-credito">CRÉDITO</span><span class="sub" style="margin-left:8px;">14/04</span></td>
+        <td class="right amount-credito">−U$D 131,63</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="section-total">
+    <div><span>Total trip:</span> $241.254,67 + U$D 987,84</div>
+    <div class="split"><span>Mitad Melisa:</span> $120.627,34 + U$D 493,92</div>
+  </div>
+</div>
+
+
+<!-- ===================== SECCIÓN ALQUILER & EXPENSAS ===================== -->
+<div class="section">
+  <div class="section-header alquiler">
+    <span class="icon">🏠</span> Alquiler &amp; Expensas
+  </div>
+  <div class="subsection-title">Seguro incendio (en tarjeta)</div>
+  <table>
+    <tbody>
+      <tr>
+        <td class="desc">Nativa — Seguro incendio departamento <span class="sub" style="margin-left:8px;">19/03</span></td>
+        <td class="right amount-pesos">$10.315,00</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="section-total" style="margin-bottom:4px;">
+    <div><span>Seg. incendio:</span> $10.315,00</div>
+    <div class="split"><span>Mitad Melisa:</span> $5.157,50</div>
+  </div>
+  <div class="subsection-title">Expensas</div>
+  <div class="pendiente-block">📋 Pendiente — cupones y PDFs de expensas del mes aún no disponibles</div>
+  <div class="subsection-title">Alquiler</div>
+  <div class="pendiente-block">📋 Pendiente — cupón Grupo Urbano del mes aún no disponible</div>
+</div>
+
+<footer>Generado con Claude Code · Mayo 2026</footer>
+
+</body>
+</html>
