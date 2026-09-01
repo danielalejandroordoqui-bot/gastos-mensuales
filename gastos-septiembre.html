@@ -99,7 +99,7 @@
 </header>
 
 <div class="en-curso-banner">
-  ⏳ <strong>En curso</strong> — llegaron los resúmenes de tarjeta (ICBC y Galicia) e internet (Personal). Faltan cupón de alquiler, expensas (2A/SS E/SS G), luz, gas y patente/peajes. Se actualiza cuando lleguen.
+  ⏳ <strong>En curso</strong> — llegaron los resúmenes de tarjeta (ICBC y Galicia), internet (Personal) y las expensas (2A/SS E/SS G). Faltan cupón de alquiler, luz, gas y patente/peajes. Se actualiza cuando lleguen.
 </div>
 
 <!-- TOTALES POR CATEGORÍA -->
@@ -119,10 +119,10 @@
     <div class="amount" style="color:#7e22ce">Pendiente</div>
     <div class="sub">Internet $103.647,13 · Gas y Luz pendientes</div>
   </div>
-  <div class="total-card alquiler pendiente">
+  <div class="total-card alquiler">
     <div class="label">Alquiler + Expensas</div>
-    <div class="amount" style="color:#15803d">Pendiente</div>
-    <div class="sub">Sin cupón ni expensas aún</div>
+    <div class="amount" style="color:#15803d">$307.496,58</div>
+    <div class="sub">Expensas 2A+SS E+SS G · falta cupón de alquiler</div>
   </div>
 </div>
 
@@ -138,12 +138,16 @@
       <div class="cat">Trip / Viaje</div>
       <div class="val">$15.494,84</div>
     </div>
+    <div class="split-item">
+      <div class="cat">Expensas</div>
+      <div class="val">$153.748,29</div>
+    </div>
     <div class="split-total">
       <div class="cat">Total en pesos (parcial)</div>
-      <div class="val">$70.624,08</div>
+      <div class="val">$224.372,36</div>
     </div>
   </div>
-  <div class="split-note">Falta sumar la mitad de servicios, alquiler y expensas cuando lleguen esos insumos.</div>
+  <div class="split-note">Falta sumar la mitad de servicios (gas y luz) y del alquiler cuando lleguen esos insumos.</div>
 </div>
 
 <!-- RESUMEN FINAL -->
@@ -157,9 +161,9 @@
         <span class="rr-label">Alquiler (canon − extraordinarias)</span>
         <span class="rr-val">Pendiente</span>
       </div>
-      <div class="resumen-row pendiente">
+      <div class="resumen-row">
         <span class="rr-label">Expensas</span>
-        <span class="rr-val">Pendiente</span>
+        <span class="rr-val">$307.496,58</span>
       </div>
       <div class="resumen-row">
         <span class="rr-label">Auto</span>
@@ -177,7 +181,7 @@
       <div class="resumen-total-row">
         <div><div class="rt-label">Total compartido (parcial)</div></div>
         <div style="text-align:right;">
-          <div class="rt-val">$141.248,15</div>
+          <div class="rt-val">$448.744,73</div>
         </div>
       </div>
     </div>
@@ -188,9 +192,9 @@
         <span class="rr-label">Alquiler (mitad)</span>
         <span class="rr-val">Pendiente</span>
       </div>
-      <div class="resumen-row pendiente">
+      <div class="resumen-row">
         <span class="rr-label">Expensas (mitad)</span>
-        <span class="rr-val">Pendiente</span>
+        <span class="rr-val">$153.748,29</span>
       </div>
       <div class="resumen-row">
         <span class="rr-label">Auto (mitad)</span>
@@ -208,7 +212,7 @@
       <div class="resumen-total-row">
         <div><div class="rt-label">Total que te debe (parcial)</div></div>
         <div style="text-align:right;">
-          <div class="rt-val">$70.624,08</div>
+          <div class="rt-val">$224.372,36</div>
         </div>
       </div>
     </div>
@@ -217,10 +221,10 @@
   <div class="saldo-neto">
     <div style="flex:1;">
       <div class="sn-label">Saldo neto a cobrar (parcial)</div>
-      <div class="sn-formula">falta sumar servicios + alquiler + expensas cuando lleguen los insumos</div>
+      <div class="sn-formula">falta sumar servicios (gas y luz) y alquiler cuando lleguen los insumos</div>
     </div>
     <div style="text-align:right;">
-      <div class="sn-val">$70.624,08</div>
+      <div class="sn-val">$224.372,36</div>
     </div>
   </div>
 </div>
@@ -301,14 +305,32 @@
   <div class="section-header alquiler">
     <span class="icon">🏠</span> Alquiler &amp; Expensas
   </div>
+  <div class="subsection-title">Expensas — Consorcio Calle 51 N°1135</div>
   <table>
     <tbody>
-      <tr class="pendiente"><td class="desc">Expensas — Consorcio Calle 51 N°1135 (2A / SS E / SS G)</td><td class="right">Pendiente</td></tr>
-      <tr class="pendiente"><td class="desc">Alquiler del departamento, septiembre 2026</td><td class="right">Pendiente</td></tr>
+      <tr>
+        <td class="desc">Unidad 2A — ordinarias $227.046,92 + extraordinarias (Fdo. Reserva) $17.925,00 <span class="sub" style="margin-left:8px;">Vto. 15/09</span></td>
+        <td class="right amount-pesos">$244.972,08</td>
+      </tr>
+      <tr>
+        <td class="desc">Unidad SS E — ordinarias $49.715,99 + extraordinarias (Fdo. Reserva) $3.925,00 <span class="sub" style="margin-left:8px;">Vto. 15/09</span></td>
+        <td class="right amount-pesos">$53.641,24</td>
+      </tr>
+      <tr>
+        <td class="desc">Unidad SS G — ordinarias $8.233,22 + extraordinarias (Fdo. Reserva) $650,00 <span class="sub" style="margin-left:8px;">Vto. 15/09</span></td>
+        <td class="right amount-pesos">$8.883,26</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="subsection-title">Alquiler</div>
+  <table>
+    <tbody>
+      <tr class="pendiente"><td class="desc">Alquiler del departamento, septiembre 2026 (cupón Grupo Urbano)</td><td class="right">Pendiente</td></tr>
     </tbody>
   </table>
   <div class="section-total">
-    <div><span>Total depto:</span> Pendiente</div>
+    <div><span>Total expensas:</span> $307.496,58</div>
+    <div class="split"><span>Mitad Melisa:</span> $153.748,29</div>
   </div>
 </div>
 
