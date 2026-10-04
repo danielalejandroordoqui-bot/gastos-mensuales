@@ -54,6 +54,10 @@
     .resumen-total-row { display: flex; justify-content: space-between; align-items: center; }
     .resumen-total-row .rt-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); }
     .resumen-total-row .rt-val   { font-size: 1.6rem; font-weight: 800; color: white; }
+    .resumen-total-row .rt-usd   { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 2px; text-align: right; }
+    .resumen-col.ella .rt-usd   { color: rgba(0,0,0,0.5); }
+    .split-total .val-usd { font-size: 0.9rem; color: rgba(0,0,0,0.6); margin-top: 2px; }
+    .saldo-neto .sn-usd   { font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
     .resumen-col.ella .rt-label { color: rgba(0,0,0,0.65); }
     .resumen-col.ella .rt-val   { color: #111111; }
     .saldo-neto { background: #111111; border-radius: 0 0 12px 12px; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
@@ -99,20 +103,20 @@
 </header>
 
 <div class="en-curso-banner">
-  ⏳ <strong>En curso</strong> — cargado hasta ahora: resumen VISA ICBC (venc. 06/10), factura de internet Personal, los 3 cupones de expensas (venc. 15/10), la patente cuota 8 (venc. 09/10) y el cupón de alquiler. Falta: resumen VISA Galicia (seguro del auto y peajes), luz y gas. Los totales de abajo son parciales.
+  ⏳ <strong>En curso</strong> — cargado hasta ahora: resúmenes VISA ICBC (venc. 06/10) y VISA Galicia (venc. 09/10), factura de internet Personal, los 3 cupones de expensas (venc. 15/10), la patente cuota 8 (venc. 09/10) y el cupón de alquiler. Falta: luz y gas. Los totales de abajo son parciales.
 </div>
 
 <!-- TOTALES POR CATEGORÍA -->
 <div class="totals-bar">
   <div class="total-card corolla">
     <div class="label">Auto — Toyota Corolla</div>
-    <div class="amount" style="color:#c2410c">$66.573,90</div>
-    <div class="sub">Patente cuota 8 · falta resumen Galicia (seguro, peajes)</div>
+    <div class="amount" style="color:#c2410c">$216.380,27</div>
+    <div class="sub">Seguro $110.580,25 + Peajes $39.226,12 + Patente $66.573,90</div>
   </div>
   <div class="total-card trip">
     <div class="label">Trip / Viaje</div>
     <div class="amount" style="color:#3a86ff">$30.989,67</div>
-    <div class="sub">Despegar cuota 7/9</div>
+    <div class="sub">+ U$D 317,42 · Despegar cuota 7/9 + auto de alquiler Costa Rica</div>
   </div>
   <div class="total-card servicios">
     <div class="label">Servicios</div>
@@ -139,12 +143,12 @@
       <div class="val">$158.098,79</div>
     </div>
     <div class="split-item">
-      <div class="cat">Auto (parcial)</div>
-      <div class="val">$33.286,95</div>
+      <div class="cat">Auto</div>
+      <div class="val">$108.190,13</div>
     </div>
     <div class="split-item">
       <div class="cat">Trip / Viaje</div>
-      <div class="val">$15.494,84</div>
+      <div class="val">$15.494,84 <span style="font-size:0.8em;">+ U$D 158,71</span></div>
     </div>
     <div class="split-item">
       <div class="cat">Servicios (parcial)</div>
@@ -152,10 +156,11 @@
     </div>
     <div class="split-total">
       <div class="cat">Total en pesos (parcial)</div>
-      <div class="val">$868.928,86</div>
+      <div class="val">$943.832,04</div>
+      <div class="val-usd">+ U$D 158,71</div>
     </div>
   </div>
-  <div class="split-note">Parcial: todavía faltan seguro del auto y peajes, luz y gas.</div>
+  <div class="split-note">Parcial: todavía faltan luz y gas.</div>
 </div>
 
 <!-- RESUMEN FINAL -->
@@ -174,8 +179,8 @@
         <span class="rr-val">$316.197,58</span>
       </div>
       <div class="resumen-row">
-        <span class="rr-label">Auto (sólo patente)</span>
-        <span class="rr-val">$66.573,90</span>
+        <span class="rr-label">Auto (seguro + peajes + patente)</span>
+        <span class="rr-val">$216.380,27</span>
       </div>
       <div class="resumen-row">
         <span class="rr-label">Servicios (sólo internet)</span>
@@ -185,11 +190,16 @@
         <span class="rr-label">Trip / Viaje</span>
         <span class="rr-val">$30.989,67</span>
       </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip / Viaje (USD)</span>
+        <span class="rr-val">U$D 317,42</span>
+      </div>
       <hr class="resumen-divider">
       <div class="resumen-total-row">
         <div><div class="rt-label">Total compartido (parcial)</div></div>
         <div style="text-align:right;">
-          <div class="rt-val">$1.737.857,71</div>
+          <div class="rt-val">$1.887.664,08</div>
+          <div class="rt-usd">+ U$D 317,42</div>
         </div>
       </div>
     </div>
@@ -205,8 +215,8 @@
         <span class="rr-val">$158.098,79</span>
       </div>
       <div class="resumen-row">
-        <span class="rr-label">Auto (mitad, sólo patente)</span>
-        <span class="rr-val">$33.286,95</span>
+        <span class="rr-label">Auto (mitad)</span>
+        <span class="rr-val">$108.190,13</span>
       </div>
       <div class="resumen-row">
         <span class="rr-label">Servicios (mitad, sólo internet)</span>
@@ -216,11 +226,16 @@
         <span class="rr-label">Trip (mitad)</span>
         <span class="rr-val">$15.494,84</span>
       </div>
+      <div class="resumen-row">
+        <span class="rr-label">Trip (mitad USD)</span>
+        <span class="rr-val">U$D 158,71</span>
+      </div>
       <hr class="resumen-divider">
       <div class="resumen-total-row">
         <div><div class="rt-label">Total que te debe (parcial)</div></div>
         <div style="text-align:right;">
-          <div class="rt-val">$868.928,86</div>
+          <div class="rt-val">$943.832,04</div>
+          <div class="rt-usd">+ U$D 158,71</div>
         </div>
       </div>
     </div>
@@ -232,7 +247,8 @@
       <div class="sn-formula">Sin anticipos de Melisa registrados para octubre. Se actualiza a medida que llegan los insumos.</div>
     </div>
     <div style="text-align:right;">
-      <div class="sn-val">$868.928,86</div>
+      <div class="sn-val">$943.832,04</div>
+      <div class="sn-usd">+ U$D 158,71</div>
     </div>
   </div>
 </div>
@@ -272,13 +288,27 @@
   <div class="subsection-title">Seguro</div>
   <table>
     <tbody>
-      <tr class="pendiente"><td class="desc">Nativa Seguros — pendiente resumen VISA Galicia</td><td class="right">—</td></tr>
+      <tr>
+        <td class="desc">Nativa Seguros — Seguro auto Toyota Corolla <span class="sub" style="margin-left:8px;">24/09 · VISA Galicia</span></td>
+        <td class="right amount-pesos">$110.580,25</td>
+      </tr>
     </tbody>
   </table>
   <div class="subsection-title">Peajes</div>
   <table>
     <tbody>
-      <tr class="pendiente"><td class="desc">Sin peajes en VISA ICBC · pendiente resumen VISA Galicia</td><td class="right">—</td></tr>
+      <tr>
+        <td class="desc">AUBASA <span class="sub" style="margin-left:8px;">03/09 · VISA Galicia</span></td>
+        <td class="right amount-pesos">$9.580,14</td>
+      </tr>
+      <tr>
+        <td class="desc">AUBASA <span class="sub" style="margin-left:8px;">18/09 · VISA Galicia</span></td>
+        <td class="right amount-pesos">$11.975,17</td>
+      </tr>
+      <tr>
+        <td class="desc">Autopistas Urbanas <span class="sub" style="margin-left:8px;">20/09 · VISA Galicia</span></td>
+        <td class="right amount-pesos">$17.670,81</td>
+      </tr>
     </tbody>
   </table>
   <div class="subsection-title">Patente</div>
@@ -291,8 +321,8 @@
     </tbody>
   </table>
   <div class="section-total">
-    <div><span>Total auto (parcial):</span> $66.573,90</div>
-    <div class="split"><span>Mitad Melisa:</span> $33.286,95</div>
+    <div><span>Total auto:</span> $216.380,27</div>
+    <div class="split"><span>Mitad Melisa:</span> $108.190,13</div>
   </div>
 </div>
 
@@ -307,11 +337,15 @@
         <td class="desc">DESPEGAR — Hotel Carmen, Iguazú <span class="sub" style="margin-left:8px;">C.07/09 · VISA ICBC</span></td>
         <td class="right amount-pesos">$30.989,67</td>
       </tr>
+      <tr>
+        <td class="desc">economybookings.com — auto de alquiler Costa Rica 2027 <span class="sub" style="margin-left:8px;">20/09 · VISA Galicia</span></td>
+        <td class="right amount-usd">U$D 317,42</td>
+      </tr>
     </tbody>
   </table>
   <div class="section-total">
-    <div><span>Total trip:</span> $30.989,67</div>
-    <div class="split"><span>Mitad Melisa:</span> $15.494,84</div>
+    <div><span>Total trip:</span> $30.989,67 + U$D 317,42</div>
+    <div class="split"><span>Mitad Melisa:</span> $15.494,84 + U$D 158,71</div>
   </div>
 </div>
 
